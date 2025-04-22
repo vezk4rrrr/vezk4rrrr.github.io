@@ -68,100 +68,78 @@
       from { opacity: 0; }
       to { opacity: 1; }
     }
-         /* Estilo para la imagen en pantalla completa */
-         #fullscreen-image {
+
+    #fullscreen-image {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: rgba(0, 0, 0, 0.9);
+      inset: 0;
       display: none;
       justify-content: center;
       align-items: center;
+      z-index: 1000;
+      pointer-events: none;
     }
 
-    #fullscreen-image img {
+    #fullscreen-image.show {
+      display: flex;
+      pointer-events: auto;
+    }
+
+    .fullscreen-backdrop {
+      position: absolute;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0);
+      transition: background-color 0.3s ease;
+      z-index: 1;
+    }
+
+    #fullscreen-image.show .fullscreen-backdrop.active {
+      background-color: rgba(0, 0, 0, 0.9);
+    }
+
+    #fullscreen-img {
       max-width: 90%;
       max-height: 90%;
+      z-index: 2;
+      transform: scale(0.2);
+      opacity: 0;
+      transition: transform 0.3s ease, opacity 0.3s ease;
     }
 
-    #fullscreen-image:active {
+    #fullscreen-image.show #fullscreen-img.active {
+      transform: scale(1);
+      opacity: 1;
+    }
+
+    .nav-button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: #fff;
+      font-size: 2em;
+      padding: 10px 20px;
+      cursor: pointer;
+      z-index: 3;
+      transition: background-color 0.3s;
+      user-select: none;
+    }
+
+    .nav-button:hover {
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .nav-button.left {
+      left: 20px;
+    }
+
+    .nav-button.right {
+      right: 20px;
+    }
+
+    .nav-button.hidden {
       display: none;
     }
-
-    #fullscreen-image {
-  position: fixed;
-  inset: 0;
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  pointer-events: none;
-}
-
-#fullscreen-image.show {
-  display: flex;
-  pointer-events: auto;
-}
-
-.fullscreen-backdrop {
-  position: absolute;
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0);
-  transition: background-color 0.3s ease;
-  z-index: 1;
-}
-
-#fullscreen-image.show .fullscreen-backdrop.active {
-  background-color: rgba(0, 0, 0, 0.9);
-}
-
-#fullscreen-img {
-  max-width: 90%;
-  max-height: 90%;
-  z-index: 2;
-  transform: scale(0.2);
-  opacity: 0;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-#fullscreen-image.show #fullscreen-img.active {
-  transform: scale(1);
-  opacity: 1;
-}
-
-.nav-button {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background-color: rgba(255, 255, 255, 0.1);
-  border: none;
-  color: #fff;
-  font-size: 2em;
-  padding: 10px 20px;
-  cursor: pointer;
-  z-index: 3;
-  transition: background-color 0.3s;
-  user-select: none;
-}
-
-.nav-button:hover {
-  background-color: rgba(255, 255, 255, 0.3);
-}
-
-.nav-button.left {
-  left: 20px;
-}
-
-.nav-button.right {
-  right: 20px;
-}
-
-.nav-button.hidden {
-  display: none;
-}
-
   </style>
 </head>
 <body>
@@ -169,15 +147,9 @@
     <h1>Marvel's Spider-Man 2</h1>
   </header>
 
-  <a href="paginacapturas.html" class="back-link">← Go back</a>
-
+  <a href="index.html" class="back-link">← Go back</a>
 
   <section class="gallery">
-    <img src="img/spider-man-2/SM1.jpg" alt="SM captura 1" class= "clickable-image">
-    <img src="img/spider-man-2/SM2.jpg" alt="SM captura 2" class= "clickable-image">
-    <img src="img/spider-man-2/SM3.jpg" alt="SM captura 3" class="clickable-image">
-    <img src="img/spider-man-2/SM4.jpg" alt="SM captura 4" class="clickable-image">
-    <img src="img/spider-man-2/SM5.jpg" alt="SM captura 5" class="clickable-image">
     <img src="img/spider-man-2/SM6.jpg" alt="SM captura 6" class="clickable-image">
     <img src="img/spider-man-2/SM7.jpg" alt="SM captura 7" class="clickable-image">
     <img src="img/spider-man-2/SM8.jpg" alt="SM captura 8" class="clickable-image">
@@ -186,19 +158,15 @@
     <img src="img/spider-man-2/SM11.jpg" alt="SM captura 11" class="clickable-image">
     <img src="img/spider-man-2/SM12.jpg" alt="SM captura 12" class="clickable-image">
     <img src="img/spider-man-2/SM13.jpg" alt="SM captura 13" class="clickable-image">
-    <img src="img/spider-man-2/SM14.jpg" alt="SM captura 14" class="clickable-image">
     <img src="img/spider-man-2/SM15.jpg" alt="SM captura 15" class="clickable-image">
     <img src="img/spider-man-2/SM16.jpg" alt="SM captura 16" class="clickable-image">
     <img src="img/spider-man-2/SM17.jpg" alt="SM captura 17" class="clickable-image">
     <img src="img/spider-man-2/SM18.jpg" alt="SM captura 18" class="clickable-image">
     <img src="img/spider-man-2/SM19.jpg" alt="SM captura 19" class="clickable-image">
     <img src="img/spider-man-2/SM20.jpg" alt="SM captura 20" class="clickable-image">
-    <img src="img/spider-man-2/SM21.jpg" alt="SM captura 21" class="clickable-image">
-    <img src="img/spider-man-2/SM22.jpg" alt="SM captura 22" class="clickable-image">
     <img src="img/spider-man-2/SM23.jpg" alt="SM captura 23" class="clickable-image">
     <img src="img/spider-man-2/SM24.jpg" alt="SM captura 24" class="clickable-image">
     <img src="img/spider-man-2/SM25.jpg" alt="SM captura 25" class="clickable-image">
-    <img src="img/spider-man-2/SM26.jpg" alt="SM captura 26" class="clickable-image">
     <img src="img/spider-man-2/SM27.jpg" alt="SM captura 27" class="clickable-image">
     <img src="img/spider-man-2/SM28.jpg" alt="SM captura 28" class="clickable-image">
     <img src="img/spider-man-2/SM29.jpg" alt="SM captura 29" class="clickable-image">
@@ -213,7 +181,6 @@
     <img src="img/spider-man-2/SM39.jpg" alt="SM captura 39" class="clickable-image">
     <img src="img/spider-man-2/SM40.jpg" alt="SM captura 40" class="clickable-image">
     <img src="img/spider-man-2/SM41.jpg" alt="SM captura 41" class="clickable-image">
-    <img src="img/spider-man-2/SM42.jpg" alt="SM captura 42" class="clickable-image">
     <img src="img/spider-man-2/SM43.jpg" alt="SM captura 43" class="clickable-image">
     <img src="img/spider-man-2/SM44.jpg" alt="SM captura 44" class="clickable-image">
     <img src="img/spider-man-2/SM45.jpg" alt="SM captura 45" class="clickable-image">
@@ -260,14 +227,14 @@
     <img src="img/spider-man-2/SM87.jpg" alt="SM captura 87" class="clickable-image">
     <img src="img/spider-man-2/SM88.jpg" alt="SM captura 88" class="clickable-image">
     <img src="img/spider-man-2/SM89.jpg" alt="SM captura 89" class="clickable-image">
-    <img src="img/spider-man-2/SM90.jpg" alt="SM captura 90" class="clickable-image">  </section>
-  <!-- Pantalla completa para ver imagen en tamaño grande -->
+    <img src="img/spider-man-2/SM90.jpg" alt="SM captura 90" class="clickable-image">
+  </section>
+
   <div id="fullscreen-image">
     <img src="" alt="Fullscreen Image" id="fullscreen-img">
     <div class="fullscreen-backdrop"></div>
-<button class="nav-button left" id="prev-button">‹</button>
-<button class="nav-button right" id="next-button">›</button>
-
+    <button class="nav-button left" id="prev-button">‹</button>
+    <button class="nav-button right" id="next-button">›</button>
   </div>
 
   <script>
@@ -281,14 +248,13 @@
         fullscreenImg.src = event.target.src;
         fullscreenImage.classList.add('show');
   
-        // Esperamos una fracción de segundo para animar imagen y fondo
         setTimeout(() => {
           fullscreenImg.classList.add('active');
-        }, 10); // casi inmediato
+        }, 10);
   
         setTimeout(() => {
           backdrop.classList.add('active');
-        }, 250); // después de que la imagen se agrandó
+        }, 250);
       });
     });
   
