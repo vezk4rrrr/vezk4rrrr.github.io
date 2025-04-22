@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dying Light 2</title>
+  <link href="https://fonts.googleapis.com/css2?family=Baskervville&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #121212;
+      color: #e0e0e0;
+      margin: 0;
+      padding: 0;
+      font-family: 'Baskervville', serif;
+    }
+    header {
+      background-color: #1e1e1e;
+      padding: 40px 20px;
+      text-align: center;
+      animation: fadeInDown 1s ease-out;
+      box-shadow: 0 0 20px #000;
+    }
+    header h1 {
+      color: #ffffff;
+      font-size: 2.8em;
+      text-shadow: 2px 2px #000;
+      margin-bottom: 10px;
+    }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      padding: 40px 20px;
+      animation: fadeIn 1.5s ease-in;
+    }
+    .gallery img {
+      width: 100%;
+      border-radius: 15px;
+      box-shadow: 0 0 10px #000;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+    .gallery img:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 15px #444;
+    }
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 1.2em;
+      color: #a9a9a9;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    .back-link:hover {
+      color: #ffffff;
+    }
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    #fullscreen-image {
+      position: fixed;
+      inset: 0;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      background-color: rgba(0, 0, 0, 0.9);
+      z-index: 1000;
+    }
+    #fullscreen-image img {
+      max-width: 90%;
+      max-height: 90%;
+    }
+    #fullscreen-image.show {
+      display: flex;
+    }
+    .fullscreen-backdrop {
+      position: absolute;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0);
+      transition: background-color 0.3s ease;
+      z-index: 1;
+    }
+    #fullscreen-image.show .fullscreen-backdrop.active {
+      background-color: rgba(0, 0, 0, 0.9);
+    }
+    #fullscreen-img {
+      max-width: 90%;
+      max-height: 90%;
+      z-index: 2;
+      transform: scale(0.2);
+      opacity: 0;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    #fullscreen-image.show #fullscreen-img.active {
+      transform: scale(1);
+      opacity: 1;
+    }
+    .nav-button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: #fff;
+      font-size: 2em;
+      padding: 10px 20px;
+      cursor: pointer;
+      z-index: 3;
+      transition: background-color 0.3s;
+      user-select: none;
+    }
+    .nav-button:hover {
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+    .nav-button.left { left: 20px; }
+    .nav-button.right { right: 20px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Dying Light 2</h1>
+  </header>
+  <a href="paginacapturas.html" class="back-link">← Go back</a>
+  <section class="gallery">
+    <img src="img/dying-light/DL1.jpg" alt="DL2 captura 1" class="clickable-image">
+    <img src="img/dying-light/DL2.jpg" alt="DL2 captura 2" class="clickable-image">
+    <img src="img/dying-light/DL3.jpg" alt="DL2 captura 3" class="clickable-image">
+    <img src="img/dying-light/DL4.jpg" alt="DL2 captura 4" class="clickable-image">
+    <img src="img/dying-light/DL5.jpg" alt="DL2 captura 5" class="clickable-image">
+    <img src="img/dying-light/DL6.jpg" alt="DL2 captura 6" class="clickable-image">
+    <img src="img/dying-light/DL7.jpg" alt="DL2 captura 7" class="clickable-image">
+    <img src="img/dying-light/DL8.jpg" alt="DL2 captura 8" class="clickable-image">
+    <img src="img/dying-light/DL9.jpg" alt="DL2 captura 9" class="clickable-image">
+    <img src="img/dying-light/DL10.jpg" alt="DL2 captura 10" class="clickable-image">
+    <img src="img/dying-light/DL11.jpg" alt="DL2 captura 11" class="clickable-image">
+    <img src="img/dying-light/DL12.jpg" alt="DL2 captura 12" class="clickable-image">
+    <img src="img/dying-light/DL13.jpg" alt="DL2 captura 13" class="clickable-image">
+    <img src="img/dying-light/DL14.jpg" alt="DL2 captura 14" class="clickable-image">
+    <img src="img/dying-light/DL15.jpg" alt="DL2 captura 15" class="clickable-image">
+    <img src="img/dying-light/DL16.jpg" alt="DL2 captura 16" class="clickable-image">
+    <img src="img/dying-light/DL17.jpg" alt="DL2 captura 17" class="clickable-image">
+    <img src="img/dying-light/DL18.jpg" alt="DL2 captura 18" class="clickable-image">
+    <img src="img/dying-light/DL19.jpg" alt="DL2 captura 19" class="clickable-image">
+    <img src="img/dying-light/DL20.jpg" alt="DL2 captura 20" class="clickable-image">
+  </section>
+  <div id="fullscreen-image">
+    <img src="" alt="Fullscreen Image" id="fullscreen-img">
+    <div class="fullscreen-backdrop"></div>
+    <button class="nav-button left" id="prev-button">‹</button>
+    <button class="nav-button right" id="next-button">›</button>
+  </div>
+  <script>
+    const images = document.querySelectorAll('.clickable-image');
+    const fullscreenImage = document.getElementById('fullscreen-image');
+    const fullscreenImg = document.getElementById('fullscreen-img');
+    const backdrop = fullscreenImage.querySelector('.fullscreen-backdrop');
+    let currentIndex = 0;
+    const imageArray = Array.from(images);
+    const prevButton = document.getElementById('prev-button');
+    const nextButton = document.getElementById('next-button');
+
+    images.forEach((image, index) => {
+      image.addEventListener('click', (event) => {
+        fullscreenImg.src = event.target.src;
+        fullscreenImage.classList.add('show');
+        setTimeout(() => fullscreenImg.classList.add('active'), 10);
+        setTimeout(() => backdrop.classList.add('active'), 250);
+        currentIndex = index;
+      });
+    });
+
+    function closeFullscreen() {
+      fullscreenImg.classList.remove('active');
+      backdrop.classList.remove('active');
+      setTimeout(() => fullscreenImage.classList.remove('show'), 300);
+    }
+
+    fullscreenImage.addEventListener('click', closeFullscreen);
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeFullscreen();
+      if (!fullscreenImage.classList.contains('show')) return;
+      if (e.key === 'ArrowRight') updateImage(currentIndex + 1);
+      if (e.key === 'ArrowLeft') updateImage(currentIndex - 1);
+    });
+
+    function updateImage(index) {
+      if (index >= 0 && index < imageArray.length) {
+        fullscreenImg.classList.remove('active');
+        backdrop.classList.remove('active');
+        setTimeout(() => {
+          fullscreenImg.src = imageArray[index].src;
+          fullscreenImg.classList.add('active');
+          backdrop.classList.add('active');
+        }, 150);
+        currentIndex = index;
+      }
+    }
+
+    prevButton.addEventListener('click', (e) => {
+      e.stopPropagation();
+      updateImage(currentIndex - 1);
+    });
+
+    nextButton.addEventListener('click', (e) => {
+      e.stopPropagation();
+      updateImage(currentIndex + 1);
+    });
+  </script>
+</body>
+</html>
