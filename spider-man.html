@@ -297,44 +297,48 @@
   </div>
 
   <script>
-   // Obtener elementos del DOM
-   const images = document.querySelectorAll('.clickable-image'); // Todas las imágenes de la galería
-   const fullscreenImage = document.getElementById('fullscreen-image'); // El contenedor de la imagen en pantalla completa
-   const fullscreenImg = document.getElementById('fullscreen-img'); // La imagen dentro del contenedor
-   const backdrop = fullscreenImage.querySelector('.fullscreen-backdrop'); // El fondo oscuro
-   const prevButton = document.getElementById('prev-button'); // Botón de "anterior"
-   const nextButton = document.getElementById('next-button'); // Botón de "siguiente"
-
-   // Variables para el deslizamiento táctil
+const images = document.querySelectorAll('.clickable-image');
+   const fullscreenImage = document.getElementById('fullscreen-image');
+   const fullscreenImg = document.getElementById('fullscreen-img');
+   const backdrop = fullscreenImage.querySelector('.fullscreen-backdrop');
+   let currentIndex = 0;
+   const imageArray = Array.from(images);
+   const prevButton = document.getElementById('prev-button');
+   const nextButton = document.getElementById('next-button');
    let touchStartX = 0;
-   let touchCurrentX = 0;
    const swipeThreshold = 50; // Ajusta este valor para la sensibilidad del deslizamiento
-   let isSwiping = false;
-   let currentIndex = 0; // Índice de la imagen actualmente mostrada en pantalla completa
 
-   // Función para mostrar la imagen en pantalla completa
-   function showFullscreenImage(imgSrc) {
-     fullscreenImg.src = imgSrc;
-     fullscreenImage.classList.add('show');
-     setTimeout(() => {
-       fullscreenImg.classList.add('active');
-     }, 10);
-     setTimeout(() => {
-       backdrop.classList.add('active');
-     }, 250);
-   }
+   images.forEach(image => {
+     image.addEventListener('click', (event) => {
+       currentIndex = imageArray.indexOf(event.target); // Obtener el índice al hacer clic
+       updateFullscreenImage(event.target.src);
+       fullscreenImage.classList.add('show');
 
-   // Función para cerrar la imagen en pantalla completa
-   function closeFullscreenImage() {
+       setTimeout(() => {
+         fullscreenImg.classList.add('active');
+       }, 10);
+
+       setTimeout(() => {
+         backdrop.classList.add('active');
+       }, 250);
+     });
+   });
+
+   function closeFullscreen() {
      fullscreenImg.classList.remove('active');
      backdrop.classList.remove('active');
-     fullscreenImg.style.transform = ''; // Limpiar transformación por deslizamiento
      setTimeout(() => {
        fullscreenImage.classList.remove('show');
      }, 300);
    }
 
-   // Función para actualizar la imagen mostrada
+   fullscreenImage.addEventListener('click', closeFullscreen);
+   document.addEventListener('keydown', (e) => {
+     if (e.key === 'Escape') {
+       closeFullscreen();
+     }
+   });
+
    function updateFullscreenImage(newSrc) {
      fullscreenImg.classList.remove('active');
      backdrop.classList.remove('active');
@@ -345,97 +349,59 @@
      }, 150);
    }
 
-   // Función para mostrar la imagen anterior
-   function showPreviousImage() {
+   function showPrevious() {
      currentIndex--;
      if (currentIndex < 0) {
-       currentIndex = images.length - 1;
+       currentIndex = imageArray.length - 1;
      }
-     updateFullscreenImage(images[currentIndex].src);
+     updateFullscreenImage(imageArray[currentIndex].src);
    }
 
-   // Función para mostrar la siguiente imagen
-   function showNextImage() {
+   function showNext() {
      currentIndex++;
-     if (currentIndex >= images.length) {
+     if (currentIndex >= imageArray.length) {
        currentIndex = 0;
      }
-     updateFullscreenImage(images[currentIndex].src);
+     updateFullscreenImage(imageArray[currentIndex].src);
    }
 
-   // Evento de clic para cada imagen de la galería
-   images.forEach((image, index) => {
-     image.addEventListener('click', () => {
-       currentIndex = index; // Guarda el índice de la imagen ক্লিকada
-       showFullscreenImage(image.src);
-     });
-   });
-
-   // Evento de clic para cerrar la pantalla completa
-   fullscreenImage.addEventListener('click', closeFullscreenImage);
-
-   // Evento de teclado para cerrar con Escape
-   document.addEventListener('keydown', (e) => {
-     if (e.key === 'Escape') {
-       closeFullscreenImage();
-     }
-   });
-
-   // Eventos de clic para los botones de navegación
    prevButton.addEventListener('click', (e) => {
-     e.stopPropagation(); // Evita que el clic se propague y cierre la pantalla completa
-     showPreviousImage();
+     e.stopPropagation();
+     showPrevious();
    });
 
    nextButton.addEventListener('click', (e) => {
      e.stopPropagation();
-     showNextImage();
+     showNext();
    });
 
-   // Eventos táctiles para el deslizamiento con animación
+   document.addEventListener('keydown', (e) => {
+     if (!fullscreenImage.classList.contains('show')) return;
+     if (e.key === 'ArrowRight') showNext();
+     if (e.key === 'ArrowLeft') showPrevious();
+   });
+
+   // Eventos táctiles para el deslizamiento
    fullscreenImage.addEventListener('touchstart', (e) => {
-     if (!fullscreenImage.classList.contains('show')) return; // Solo si está en pantalla completa
      touchStartX = e.touches[0].clientX;
-     touchCurrentX = touchStartX;
-     isSwiping = true;
-     fullscreenImg.style.transition = 'transform 0s'; // Sin transición durante el deslizamiento
-   });
-
-   fullscreenImage.addEventListener('touchmove', (e) => {
-     if (!isSwiping) return;
-     touchCurrentX = e.touches[0].clientX;
-     const deltaX = touchCurrentX - touchStartX;
-     fullscreenImg.style.transform = `translateX(${deltaX}px)`; // Mueve la imagen
    });
 
    fullscreenImage.addEventListener('touchend', (e) => {
-     if (!isSwiping) return;
-     isSwiping = false;
-     fullscreenImg.style.transition = ''; // Reactiva la transición
+     if (!touchStartX) return;
 
      const touchEndX = e.changedTouches[0].clientX;
      const deltaX = touchEndX - touchStartX;
 
      if (Math.abs(deltaX) > swipeThreshold) {
        if (deltaX > 0) {
-         showPreviousImage();
+         // Deslizamiento hacia la derecha
+         showPrevious();
        } else {
-         showNextImage();
+         // Deslizamiento hacia la izquierda
+         showNext();
        }
-     } else {
-       fullscreenImg.style.transform = ''; // Vuelve al centro si no hay deslizamiento
      }
-     touchStartX = 0;
-     touchCurrentX = 0;
-   });
-
-   // Evita el comportamiento de arrastrar la imagen
-   fullscreenImg.addEventListener('dragstart', (e) => {
-     e.preventDefault();
-   });
-   // Agregar evento para evitar el comportamiento de arrastrar la imagen en dispositivos táctiles
-   fullscreenImg.addEventListener('touchstart', (e) => {
-     e.preventDefault();
+     touchStartX = 0; // Resetear la posición inicial
    });
 </script>
 </body>
