@@ -297,81 +297,111 @@
   </div>
 
   <script>
-    const images = document.querySelectorAll('.clickable-image');
-    const fullscreenImage = document.getElementById('fullscreen-image');
-    const fullscreenImg = document.getElementById('fullscreen-img');
-    const backdrop = fullscreenImage.querySelector('.fullscreen-backdrop');
-  
-    images.forEach(image => {
-      image.addEventListener('click', (event) => {
-        fullscreenImg.src = event.target.src;
-        fullscreenImage.classList.add('show');
-  
-        setTimeout(() => {
-          fullscreenImg.classList.add('active');
-        }, 10);
-  
-        setTimeout(() => {
-          backdrop.classList.add('active');
-        }, 250);
-      });
-    });
-  
-    function closeFullscreen() {
-      fullscreenImg.classList.remove('active');
-      backdrop.classList.remove('active');
-      setTimeout(() => {
-        fullscreenImage.classList.remove('show');
-      }, 300);
-    }
-  
-    fullscreenImage.addEventListener('click', closeFullscreen);
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        closeFullscreen();
-      }
-    });
+const images = document.querySelectorAll('.clickable-image');
+   const fullscreenImage = document.getElementById('fullscreen-image');
+   const fullscreenImg = document.getElementById('fullscreen-img');
+   const backdrop = fullscreenImage.querySelector('.fullscreen-backdrop');
+   let currentIndex = 0;
+   const imageArray = Array.from(images);
+   const prevButton = document.getElementById('prev-button');
+   const nextButton = document.getElementById('next-button');
+   let touchStartX = 0;
+   const swipeThreshold = 50; // Ajusta este valor para la sensibilidad del deslizamiento
 
-    let currentIndex = 0;
-    const imageArray = Array.from(images);
-    const prevButton = document.getElementById('prev-button');
-    const nextButton = document.getElementById('next-button');
+   images.forEach(image => {
+     image.addEventListener('click', (event) => {
+       currentIndex = imageArray.indexOf(event.target); // Obtener el índice al hacer clic
+       updateFullscreenImage(event.target.src);
+       fullscreenImage.classList.add('show');
 
-    function updateImage(index) {
-      if (index >= 0 && index < imageArray.length) {
-        fullscreenImg.classList.remove('active');
-        backdrop.classList.remove('active');
-        setTimeout(() => {
-          fullscreenImg.src = imageArray[index].src;
-          fullscreenImg.classList.add('active');
-          backdrop.classList.add('active');
-        }, 150);
-        currentIndex = index;
-      }
-    }
+       setTimeout(() => {
+         fullscreenImg.classList.add('active');
+       }, 10);
 
-    prevButton.addEventListener('click', (e) => {
-      e.stopPropagation();
-      updateImage(currentIndex - 1);
-    });
+       setTimeout(() => {
+         backdrop.classList.add('active');
+       }, 250);
+     });
+   });
 
-    nextButton.addEventListener('click', (e) => {
-      e.stopPropagation();
-      updateImage(currentIndex + 1);
-    });
+   function closeFullscreen() {
+     fullscreenImg.classList.remove('active');
+     backdrop.classList.remove('active');
+     setTimeout(() => {
+       fullscreenImage.classList.remove('show');
+     }, 300);
+   }
 
-    images.forEach((image, index) => {
-      image.addEventListener('click', () => {
-        currentIndex = index;
-      });
-    });
+   fullscreenImage.addEventListener('click', closeFullscreen);
+   document.addEventListener('keydown', (e) => {
+     if (e.key === 'Escape') {
+       closeFullscreen();
+     }
+   });
 
-    document.addEventListener('keydown', (e) => {
-      if (!fullscreenImage.classList.contains('show')) return;
-      if (e.key === 'ArrowRight') updateImage(currentIndex + 1);
-      if (e.key === 'ArrowLeft') updateImage(currentIndex - 1);
-    });
+   function updateFullscreenImage(newSrc) {
+     fullscreenImg.classList.remove('active');
+     backdrop.classList.remove('active');
+     setTimeout(() => {
+       fullscreenImg.src = newSrc;
+       fullscreenImg.classList.add('active');
+       backdrop.classList.add('active');
+     }, 150);
+   }
 
-  </script>
+   function showPrevious() {
+     currentIndex--;
+     if (currentIndex < 0) {
+       currentIndex = imageArray.length - 1;
+     }
+     updateFullscreenImage(imageArray[currentIndex].src);
+   }
+
+   function showNext() {
+     currentIndex++;
+     if (currentIndex >= imageArray.length) {
+       currentIndex = 0;
+     }
+     updateFullscreenImage(imageArray[currentIndex].src);
+   }
+
+   prevButton.addEventListener('click', (e) => {
+     e.stopPropagation();
+     showPrevious();
+   });
+
+   nextButton.addEventListener('click', (e) => {
+     e.stopPropagation();
+     showNext();
+   });
+
+   document.addEventListener('keydown', (e) => {
+     if (!fullscreenImage.classList.contains('show')) return;
+     if (e.key === 'ArrowRight') showNext();
+     if (e.key === 'ArrowLeft') showPrevious();
+   });
+
+   // Eventos táctiles para el deslizamiento
+   fullscreenImage.addEventListener('touchstart', (e) => {
+     touchStartX = e.touches[0].clientX;
+   });
+
+   fullscreenImage.addEventListener('touchend', (e) => {
+     if (!touchStartX) return;
+
+     const touchEndX = e.changedTouches[0].clientX;
+     const deltaX = touchEndX - touchStartX;
+
+     if (Math.abs(deltaX) > swipeThreshold) {
+       if (deltaX > 0) {
+         // Deslizamiento hacia la derecha
+         showPrevious();
+       } else {
+         // Deslizamiento hacia la izquierda
+         showNext();
+       }
+     }
+     touchStartX = 0; // Resetear la posición inicial
+   });  </script>
 </body>
 </html>
